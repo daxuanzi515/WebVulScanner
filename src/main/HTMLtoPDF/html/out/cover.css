@@ -1,0 +1,33 @@
+body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 1150pt;
+            font-family: Arial, sans-serif;
+            /*background-color: #f2f2f2;*/
+        }
+
+        .cover {
+            text-align: center;
+            position: relative;
+        }
+
+        .cover img {
+            width: 300px;
+            height: 300px;
+            display: block;
+            margin-left: 800px;
+        }
+
+        .cover h1 {
+            font-size: 120px;
+            margin-top: 360px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .cover p {
+            font-size: 24px;
+        }
+
+
