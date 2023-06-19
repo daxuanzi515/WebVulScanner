@@ -8,6 +8,8 @@
 
 需要手动安装`wkhtmltopdf`应用 否则无法使用导出PDF文件功能
 
+**手动建立文件夹：在main下建立log和pdf文件夹，在log里建立xss文件夹**
+
 ```python
 self.table_data=
 [
