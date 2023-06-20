@@ -47,6 +47,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui.start.clicked.connect(self.crawl_web)
         self.ui.open.clicked.connect(self.open_file)
         self.ui.xss.stateChanged.connect(self.xss_trace)
+        self.ui.csrf.stateChanged.connect(self.csrf_trace)
 
         self.ui.findlog.clicked.connect(self.find_log)
         self.ui.clearlog.clicked.connect(self.clear_log)
@@ -90,12 +91,31 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for item_data in row_data:
                 self.Table.add_row(item_data)
 
+    def csrf_trace(self):
+        target_list = self.Tools.scanner_model.getCheckedItems()
+        # csrf_logs = []
+        # csrf_warnings = []
+        csrf_msg = []
+        level = '6'
+        for item in target_list:
+            csrf_per_log, csrf_per_warning = self.interface.csrf_interface(item)
+            self.ui.log.append(csrf_per_log)
+            csrf_msg.append([item, csrf_per_warning, level])
+
+        self.table_data.append(csrf_msg)
+
+        for row_data in self.table_data:
+            for item_data in row_data:
+                self.Table.add_row(item_data)
+
+
+
 
     def clear_log(self):
         self.ui.log.clear()
 
     def find_log(self):
-        folder_path = r"D:\PyCharmTest\PyCharmPackets\Models\WebScannerProject\reference\pythonProject\src\log"
+        folder_path = r"D:\AAtestplaceforcode\WebVulScanner\src\log"
         select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.txt)")
         if select_file_path:
         # 将文件路径转换为QUrl对象
@@ -117,7 +137,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.interface.download_interface(resource_data)
         print('yes')
         # 打开固定文件夹
-        folder_path = r"D:\PyCharmTest\PyCharmPackets\Models\WebScannerProject\reference\pythonProject\src\pdf"
+        folder_path = r"D:\AAtestplaceforcode\WebVulScanner\src\pdf"
         select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.pdf)")
         if select_file_path:
         # 将文件路径转换为QUrl对象

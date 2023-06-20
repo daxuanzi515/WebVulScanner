@@ -6,8 +6,8 @@ class XssTrace(object):
     def __init__(self,url):
         super(XssTrace, self).__init__()
         self.url = url
-        self.path = r'D:\PyCharmTest\PyCharmPackets\Models\WebScannerProject\reference\pythonProject\src\main\xss\XSSTest\xsstest.py'
-        self.output = r"D:/PyCharmTest/PyCharmPackets/Models/WebScannerProject/reference/pythonProject/src/log/xss/xss_log_{}.txt"
+        self.path = r'D:\AAtestplaceforcode\WebVulScanner\src\main\xss\XSSTest\xsstest.py'
+        self.output = r"D:\AAtestplaceforcode\WebVulScanner\src\log\xss\xss_log_{}.txt"
     def execute_shell_command(self):
         command = ["python",
                    self.path,
@@ -116,32 +116,10 @@ class Filter(object):
         #     print('{}:{}'.format(index, item))
 
 # if __name__ == '__main__':
-#
-#
-#     url = 'http://localhost:8080/dvwa/vulnerabilities/xss_d/?default=%3Cscript%3Ealert(/xss/)%3C/script%3E'
+#     url = 'http://8.130.8.193/pikachu/vul/xss/xsspost/post_login.php'
 #     xss = XssTrace(url)
-#     xss_log = xss.execute_shell_command()
-    # print(xss_log)
-
-    # resource_file = 'resource_file.txt'
-    # filter_file = 'filter_file.txt'
-    # with open(resource_file, "r", encoding='utf-8') as file:
-    #     resource_data = file.readlines()
-    #     test = Filter(data=resource_data)
-    #     test.start()
-    #     with open(filter_file, "w", encoding='utf-8') as sfile:
-    #         for item in test.result:
-    #             sfile.write(item + '\n')  # 添加换行符
-    # file.close()
-    # sfile.close()
-
-
-
-# if __name__ == '__main__':
-#     url = 'http://localhost:8080/pikachu/vul/xss/xsspost/post_login.php'
-#     xss = XssTrace(url)
-#     xss_log = xss.execute_shell_command()
+#     xss_log, xss_warning = xss.execute_shell_command()
+#     print(xss_warning)
 #     print(xss_log)
-
 
 
