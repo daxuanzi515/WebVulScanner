@@ -1,7 +1,7 @@
-src/main/phish/out/*.png
-src/main/phish/target/*.png
-src/**/*.txt
-src/**/*.pdf
+src/main/phish/out/*
+src/main/phish/target/*
+src/pdf/*
+src/log/*
 # 默认忽略的文件
 /shelf/
 /workspace.xml
