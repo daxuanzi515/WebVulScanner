@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.support import expected_conditions as ec
 from selenium import webdriver
 
-from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -21,6 +21,7 @@ class PhishDetector:
         self.item_work = []
         self.txts_content = []
 
+        self.log_content.append('Start Phishing Detect!!!\n')
 
         self.keywords = ['登录', '', '', '', '']
         self.keywords_list = {
@@ -85,27 +86,24 @@ class PhishDetector:
         im_show = Image.fromarray(im_show)
         im_show.save(output_path)
 
-
-    def from_screen_To_ocr_result(self, url_list):
+    # per url
+    def from_screen_To_ocr_result(self, url):
         current_time = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
         log_time = time.strftime("%H:%M:%S", time.localtime())
-        self.log_content.append('Start Phishing Detect!!!\n')
 
-        for index, url in enumerate(url_list):
-            item_name = r'/screenshot_{}-{}.png'.format(current_time, index)
-            out_path = self.out_img + item_name
-            real_path = self.target_img + item_name
-            self.item_work.append([url, real_path, out_path])
-            self.get_screen_shot_invisible(url, real_path)
-            self.log_content.append('[]: From {} gets screenshot successfully!\n'.format(log_time, url))
-            print('The image from: {} screenshot gets sucessfully~~'.format(url))
+        item_name = r'/screenshot_{}_.png'.format(current_time)
+        out_path = self.out_img + item_name
+        real_path = self.target_img + item_name
+        self.get_screen_shot_invisible(url, real_path)
+        self.log_content.append('[]: From {} gets screenshot successfully!\n'.format(log_time, url))
+        print('The image from: {} screenshot gets sucessfully~~'.format(url))
 
+        self.screenshot_ocr_operator(real_path, out_path)
+        self.log_content.append('[]: From {} gets screenshot successfully!\n'.format(log_time, url))
+        print('The image from: {} ocr gets sucessfully~~'.format(url))
 
-        for per_item in self.item_work:
-            url, inputs, outputs = per_item
-            self.screenshot_ocr_operator(inputs, outputs)
-            self.log_content.append('[]: From {} gets screenshot successfully!\n'.format(log_time, url))
-            print('The image from: {} ocr gets sucessfully~~'.format(per_item[0]))
+        return 'loading', 'loading'
+
 
 
     def recognizer_text_content(self):
@@ -131,5 +129,5 @@ class PhishDetector:
 #         # 'http://192.168.43.135/',# kali的twitter 登录
 #         # 'https://psyopclaim.space/' # ape币 猿币交易
 #     ]
-#     phish_detector.from_screen_To_ocr_result(url_list=url_list)
+#     phish_detector.from_screen_To_ocr_result(url)
 #

@@ -54,6 +54,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui.open.clicked.connect(self.open_file)
         self.ui.xss.stateChanged.connect(self.xss_trace)
         self.ui.csrf.stateChanged.connect(self.csrf_trace)
+        self.ui.webattack.stateChanged.connect(self.phish_trace)
 
         self.ui.findlog.clicked.connect(self.find_log)
         self.ui.clearlog.clicked.connect(self.clear_log)
@@ -109,13 +110,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             csrf_msg.append([item, csrf_per_warning, level])
 
         self.table_data.append(csrf_msg)
-        print(self.table_data)
         for row_data in self.table_data:
             for item_data in row_data:
                 self.Table.add_row(item_data)
 
+    def phish_trace(self):
+        target_list = self.Tools.scanner_model.getCheckedItems()
+        level = str(random.randint(7, 10))
+        phish_msg = []
+        for item in target_list:
+            phish_per_log, phish_per_warning = self.interface.phish_interface(item)
+            self.ui.log.append(phish_per_log)
+            phish_msg.append([item, phish_per_warning, level])
 
-
+        self.table_data.append(phish_msg)
+        for row_data in self.table_data:
+            for item_data in row_data:
+                self.Table.add_row(item_data)
 
     def clear_log(self):
         self.ui.log.clear()
