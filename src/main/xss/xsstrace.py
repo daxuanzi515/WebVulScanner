@@ -3,11 +3,24 @@ import subprocess
 import time
 
 class XssTrace(object):
-    def __init__(self,url):
+    def __init__(self, url, config_ini):
         super(XssTrace, self).__init__()
         self.url = url
-        self.path = r'D:\AAtestplaceforcode\WebVulScanner\src\main\xss\XSSTest\xsstest.py'
-        self.output = r"D:\AAtestplaceforcode\WebVulScanner\src\log\xss\xss_log_{}.txt"
+<<<<<<< HEAD
+        self.config_ini = config_ini
+
+        self.path = self.config_ini['main_project']['project_path'] + self.config_ini['xss']['xss_py']
+        self.output = self.config_ini['main_project']['project_path'] + self.config_ini['xss']['xss_log']
+
+
+=======
+        self.config_ini = config_ini
+
+        self.path = self.config_ini['main_project']['project_path'] + self.config_ini['xss']['xss_py']
+        self.output = self.config_ini['main_project']['project_path'] + self.config_ini['xss']['xss_log']
+
+
+>>>>>>> upstream/cxx
     def execute_shell_command(self):
         command = ["python",
                    self.path,
@@ -15,7 +28,6 @@ class XssTrace(object):
         # "./XSSCon/xsscon.py" 当前 但是要调用的时候 变成绝对路径
         current_time = time.localtime()
         current_time = time.strftime("%Y-%m-%d_%H-%M-%S", current_time)
-        # output_file = "../../log/xss_log.txt"#.format(current_time)
 
         output_file = self.output.format(current_time)
         if not os.path.exists(output_file):
@@ -38,10 +50,6 @@ class XssTrace(object):
                 result = "\n".join(filtered_lines)
                 file.write(result)
 
-                # test = Filter(filtered_lines)
-                # test.start()
-                # print(test.result)
-
                 cutting_msg = self.data_extract(filtered_lines)
                 warnings = '\n'.join(cutting_msg)
                 return result, warnings
@@ -49,13 +57,12 @@ class XssTrace(object):
         except subprocess.CalledProcessError as e:
             print(e.output)
 
-
-
     def data_extract(self, msg):
         extract_operator = Filter(data=msg)
         extract_operator.start()
         result = extract_operator.result
         return result
+
 
 import re
 class Filter(object):
@@ -63,7 +70,7 @@ class Filter(object):
         self.data = data
         self.filter_data = None
         self.dom_data = None
-        self.result =None
+        self.result = None
 
     def dom_extract(self):
         endstr = '------------------------------------------------------------------------------------------------------------------------'
@@ -96,8 +103,6 @@ class Filter(object):
         pattern = r'\[\d{2}:\d{2}:\d{2}\]'
         return re.sub(pattern, '', item)
 
-
-
     def remove_keywords(self, item):
         keywords = ['[CRITICAL]', '[WARNING]']
         for keyword in keywords:
@@ -105,21 +110,13 @@ class Filter(object):
         return item
 
     def start(self):
-        # print('yes')
         self.dom_data = self.dom_extract()
         self.filter_data = self.data_extract()
         self.filter_data = [self.remove_timestamp(item) for item in self.filter_data]
         self.filter_data = [self.remove_keywords(item) for item in self.filter_data]
         self.filter_data = list(set(self.filter_data))  # 去重
         self.result = self.filter_data + self.dom_data
-        # for index, item in enumerate(self.result):
-        #     print('{}:{}'.format(index, item))
-
-# if __name__ == '__main__':
-#     url = 'http://8.130.8.193/pikachu/vul/xss/xsspost/post_login.php'
-#     xss = XssTrace(url)
-#     xss_log, xss_warning = xss.execute_shell_command()
-#     print(xss_warning)
-#     print(xss_log)
-
+<<<<<<< HEAD
+=======
+>>>>>>> upstream/cxx
 

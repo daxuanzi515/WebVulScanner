@@ -1,3 +1,4 @@
+import random
 import qdarkstyle
 from PyQt5 import uic
 from PyQt5.QtCore import QRegularExpression, Qt, QUrl
@@ -7,8 +8,9 @@ from PyQt5.QtWidgets import QInputDialog, QMessageBox, qApp
 from pyqt5_plugins.examplebutton import QtWidgets
 from qdarkstyle import LightPalette
 
-from ui.py.tools import Tools, TableView
 from interface import interface
+from ui.py.tools import Tools, TableView
+from config.config import Config
 
 # 加载 .ui 文件
 ui_path = "ui/index.ui"
@@ -24,14 +26,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui.setupUi(self)
         self.setWindowIcon(QIcon(ui_icon))
         self.pixmap = QPixmap(ui_pointer)
-        self.smaller_pixmap = self.pixmap.scaled(24, 24)  # 将图像调整为 32x32 的尺寸
+        self.smaller_pixmap = self.pixmap.scaled(24, 24)  # 将图像调整为24*24的尺寸
         # 设置鼠标跟踪
         self.setMouseTracking(True)
+
+        # 读取配置文件
+        self.Config = Config()
+        self.config_ini = self.Config.read_config()
 
         # 初始化数据
         self.scanner_data = []
         self.file_data = []
-        self.interface = interface()
+        self.interface = interface(self.config_ini)
         self.Tools = Tools()
         self.log_data = []
         self.light_theme = qdarkstyle.load_stylesheet(qt_api='pyqt5', palette=LightPalette())
@@ -77,11 +83,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         xss_logs = []
         xss_warnings = []
         xss_msg = []
-        level = '7'
+        level = str(random.randint(4, 7))
         for item in target_list:
             xss_per_log, xss_warning = self.interface.xss_interface(item)
             self.ui.log.append(xss_per_log)
-            # self.ui.log.append(xss_warning)
             xss_msg.append([item, xss_warning, level])
             xss_warnings.append(xss_warning)
             xss_logs.append(xss_per_log)
@@ -115,7 +120,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui.log.clear()
 
     def find_log(self):
-        folder_path = r"D:\AAtestplaceforcode\WebVulScanner\src\log"
+<<<<<<< HEAD
+        folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['log']['log_path']
+=======
+        folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['log']['log_path']
+>>>>>>> upstream/cxx
         select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.txt)")
         if select_file_path:
         # 将文件路径转换为QUrl对象
@@ -135,9 +144,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def download_report(self):
         resource_data = self.table_data
         self.interface.download_interface(resource_data)
-        print('yes')
-        # 打开固定文件夹
-        folder_path = r"D:\AAtestplaceforcode\WebVulScanner\src\pdf"
+<<<<<<< HEAD
+        folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['pdf']['pdf_path']
+=======
+        folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['pdf']['pdf_path']
+>>>>>>> upstream/cxx
         select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.pdf)")
         if select_file_path:
         # 将文件路径转换为QUrl对象
@@ -173,9 +184,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             item.setCheckable(True)
             # 获取根节点 这里有问题... 要给全局？不对是scanner的实例化对象
             root_item = self.Tools.scanner_model.invisibleRootItem()
-            print(root_item)
             item1 = root_item.child(0)
-            print(item1)
             # 将新项插入到第一个子项的第一个位置
             item1.insertRow(0, item)
         else:

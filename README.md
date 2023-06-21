@@ -4,9 +4,12 @@
 
 使用`pip install -r requirements.txt`安装依赖
 
-打开项目把所有绝对路径改成你自己的绝对路径，不然一点都跑不了
+修改config.config.py里的config.ini的绝对路径，并且在config.ini里编辑你的项目绝对路径
 
 需要手动安装`wkhtmltopdf`应用 否则无法使用导出PDF文件功能
+
+如果没有文件夹：
+**手动建立文件夹：在main下建立log和pdf文件夹，在log里建立xss文件夹**
 
 ```python
 self.table_data=
