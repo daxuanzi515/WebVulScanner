@@ -19,7 +19,7 @@ class interface(object):
         return xss_log, xss_warning
 
     def csrf_interface(self, url):
-        csrf=Csrf(url)
+        csrf = Csrf(url, self.config_ini)
         csrf_log, csrf_warning = csrf.execute_shell_command()
         return csrf_log, csrf_warning
 
