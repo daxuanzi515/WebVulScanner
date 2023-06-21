@@ -28,6 +28,4 @@ class interface(object):
         for item_data in data:
             downloader.start(item_data)
 
-<<<<<<< HEAD
-=======
->>>>>>> upstream/cxx
+

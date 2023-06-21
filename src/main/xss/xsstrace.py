@@ -6,21 +6,12 @@ class XssTrace(object):
     def __init__(self, url, config_ini):
         super(XssTrace, self).__init__()
         self.url = url
-<<<<<<< HEAD
+
         self.config_ini = config_ini
 
         self.path = self.config_ini['main_project']['project_path'] + self.config_ini['xss']['xss_py']
         self.output = self.config_ini['main_project']['project_path'] + self.config_ini['xss']['xss_log']
 
-
-=======
-        self.config_ini = config_ini
-
-        self.path = self.config_ini['main_project']['project_path'] + self.config_ini['xss']['xss_py']
-        self.output = self.config_ini['main_project']['project_path'] + self.config_ini['xss']['xss_log']
-
-
->>>>>>> upstream/cxx
     def execute_shell_command(self):
         command = ["python",
                    self.path,
@@ -116,7 +107,5 @@ class Filter(object):
         self.filter_data = [self.remove_keywords(item) for item in self.filter_data]
         self.filter_data = list(set(self.filter_data))  # 去重
         self.result = self.filter_data + self.dom_data
-<<<<<<< HEAD
-=======
->>>>>>> upstream/cxx
+
 

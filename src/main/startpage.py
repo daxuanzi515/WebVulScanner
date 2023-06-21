@@ -120,11 +120,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui.log.clear()
 
     def find_log(self):
-<<<<<<< HEAD
+
         folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['log']['log_path']
-=======
-        folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['log']['log_path']
->>>>>>> upstream/cxx
+
         select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.txt)")
         if select_file_path:
         # 将文件路径转换为QUrl对象
@@ -144,11 +142,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def download_report(self):
         resource_data = self.table_data
         self.interface.download_interface(resource_data)
-<<<<<<< HEAD
+
         folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['pdf']['pdf_path']
-=======
-        folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['pdf']['pdf_path']
->>>>>>> upstream/cxx
+
         select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.pdf)")
         if select_file_path:
         # 将文件路径转换为QUrl对象
