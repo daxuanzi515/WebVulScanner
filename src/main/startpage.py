@@ -91,6 +91,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             xss_warnings.append(xss_warning)
             xss_logs.append(xss_per_log)
         self.table_data.append(xss_msg)
+        print(self.table_data)
 
         for row_data in self.table_data:
             for item_data in row_data:
@@ -108,7 +109,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             csrf_msg.append([item, csrf_per_warning, level])
 
         self.table_data.append(csrf_msg)
-
+        print(self.table_data)
         for row_data in self.table_data:
             for item_data in row_data:
                 self.Table.add_row(item_data)

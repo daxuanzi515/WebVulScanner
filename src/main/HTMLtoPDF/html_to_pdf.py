@@ -22,11 +22,10 @@ class HTMLtoPDF:
         # cover_html是 webscannerbook.html-封皮 的内容
         # new_html是生成的新的网页 用于转pdf
         # new_pdf 是转成的pdf
-        # self.cover_html = ['<!DOCTYPE html>\n', '<html>\n', '<head>\n', '    <meta charset="UTF-8">\n', '    <title>Cover Page</title>\n', '    <link rel="stylesheet" href="cover.css">\n', '</head>\n', '<body>\n', '    <div class="cover">\n', '        <img src="images/spider.png" alt="Cover Image">\n', '        <h1>WEB SCANNER REPORT</h1>\n', '    </div>\n', '</body>\n', '</html>\n']
+        self.cover_html = ['<!DOCTYPE html>\n', '<html>\n', '<head>\n', '    <meta charset="UTF-8">\n', '    <title>Cover Page</title>\n', '    <link rel="stylesheet" href="cover.css">\n', '</head>\n', '<body>\n', '    <div class="cover">\n', '        <img src="images/spider.png" alt="Cover Image">\n', '        <h1>WEB SCANNER REPORT</h1>\n', '    </div>\n', '</body>\n', '</html>\n']
         self.new_html = self.config_ini['main_project']['project_path'] + self.config_ini['html']['new_html_path']
         self.new_pdf = self.config_ini['main_project']['project_path'] + self.config_ini['pdf']['new_pdf_path']
         self.cover_file = self.config_ini['main_project']['project_path'] + self.config_ini['html']['cover_path']
-        self.cover_html = []
     # 组装封面和数据格式
     def connect_htmlformat(self, data):
         html_strings = []
@@ -46,10 +45,6 @@ class HTMLtoPDF:
             html_string += '</div>'
             html_strings.append(html_string)
 
-        with open(self.cover_file, 'r', encoding='utf-8') as file:
-            self.cover_html = file.readlines()
-        file.close()
-
         insert_index = None
         for i, line in enumerate(self.cover_html):
             if line.strip() == '</div>':
@@ -57,7 +52,6 @@ class HTMLtoPDF:
                 break
         # 插入处理好的字符串
         self.cover_html[insert_index:insert_index] = html_strings
-        # print(self.cover_html)
 
     def write_pdf(self):
         current_time = time.localtime()
