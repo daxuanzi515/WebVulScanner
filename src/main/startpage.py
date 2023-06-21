@@ -53,6 +53,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui.start.clicked.connect(self.crawl_web)
         self.ui.open.clicked.connect(self.open_file)
         self.ui.xss.stateChanged.connect(self.xss_trace)
+        self.ui.csrf.stateChanged.connect(self.csrf_trace)
 
         self.ui.findlog.clicked.connect(self.find_log)
         self.ui.clearlog.clicked.connect(self.clear_log)
@@ -95,12 +96,33 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for item_data in row_data:
                 self.Table.add_row(item_data)
 
+    def csrf_trace(self):
+        target_list = self.Tools.scanner_model.getCheckedItems()
+        # csrf_logs = []
+        # csrf_warnings = []
+        csrf_msg = []
+        level = '6'
+        for item in target_list:
+            csrf_per_log, csrf_per_warning = self.interface.csrf_interface(item)
+            self.ui.log.append(csrf_per_log)
+            csrf_msg.append([item, csrf_per_warning, level])
+
+        self.table_data.append(csrf_msg)
+
+        for row_data in self.table_data:
+            for item_data in row_data:
+                self.Table.add_row(item_data)
+
+
+
 
     def clear_log(self):
         self.ui.log.clear()
 
     def find_log(self):
+
         folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['log']['log_path']
+
         select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.txt)")
         if select_file_path:
         # 将文件路径转换为QUrl对象
@@ -120,7 +142,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def download_report(self):
         resource_data = self.table_data
         self.interface.download_interface(resource_data)
+
         folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['pdf']['pdf_path']
+
         select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.pdf)")
         if select_file_path:
         # 将文件路径转换为QUrl对象

@@ -1,3 +1,5 @@
+src/main/phish/out/*.png
+src/main/phish/target/*.png
 src/**/*.txt
 src/**/*.pdf
 # 默认忽略的文件
