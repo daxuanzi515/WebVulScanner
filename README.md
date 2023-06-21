@@ -72,3 +72,47 @@ http://localhost:8080/pikachu/vul/xss/xss_01.php?message=1111111&submit=submit
 http://localhost:8080/pikachu/vul/xss/xss_04.php?message=kobe&submit=submit
 ```
 
+
+
+`Phish`思路
+
+```python
+# 查询总站
+https://phishtank.org
+
+# 存活的钓鱼链接
+url_list = [
+        'http://myvirgin-mobile-login.com/',# 手机购买表单 需要事先人机验证
+        'http://myvirgin-mobile-login.com/profile.php', # 手机购买个人信息 需要事先人机验证
+        'https://freefireevent2023.github.io/spin/', # 登录ID表单
+        'https://systemcesure.buzz/portalserver/bancanetempresarial/index/public/', # 伪造公司介绍面
+        'https://login.busiinesshellp.click/',# facebook 登录界面
+        'http://192.168.43.135/',# 本机kali的twitter 登录界面
+        'https://psyopclaim.space/' # ape币 猿币交易
+    ]
+
+# 字典列表
+keywords = ['登录', '邮箱', '钱包', '密码', '注册', '电话号码', ..., '助词']
+```
+
+
+
+`A.` 文字识别
+
+自动化工具`selenium`后台打开网页截屏
+
+你需要一个助推器 `chrome_driver.exe` [下载](http://chromedriver.storage.googleapis.com/index.html) 根据自己的浏览器版本下载并加入环境变量
+
+截屏内容放入`ocr`识别模型, 得到文字列表`word_list`
+
+根据敏感词字典匹配文字，计算占比
+
+`B.` 分析源码
+
+向浏览器获取网址源码
+
+探测是否存在表单或者跳转链接
+
+`C.` 根据规则判定钓鱼危险等级
+
+规则....
