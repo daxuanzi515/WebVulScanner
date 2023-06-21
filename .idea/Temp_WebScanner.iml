@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="PYTHON_MODULE" version="4">
+<module version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
-<<<<<<< HEAD:.idea/WebScanner.iml
     <orderEntry type="jdk" jdkName="Python 3.8 (web)" jdkType="Python SDK" />
-=======
-    <orderEntry type="jdk" jdkName="Python 3.7 (py37)" jdkType="Python SDK" />
->>>>>>> upstream/cxx:.idea/Temp_WebScanner.iml
     <orderEntry type="sourceFolder" forTests="false" />
-  </component>
-  <component name="PyNamespacePackagesService">
-    <option name="namespacePackageFolders">
-      <list>
-        <option value="$MODULE_DIR$/src/main" />
-      </list>
-    </option>
   </component>
 </module>
