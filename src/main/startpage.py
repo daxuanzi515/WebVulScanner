@@ -55,6 +55,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui.xss.stateChanged.connect(self.xss_trace)
         self.ui.csrf.stateChanged.connect(self.csrf_trace)
         self.ui.force.stateChanged.connect(self.brute_trace)
+        self.ui.webattack.stateChanged.connect(self.phish_trace)
+
 
         self.ui.findlog.clicked.connect(self.find_log)
         self.ui.clearlog.clicked.connect(self.clear_log)
@@ -92,6 +94,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             xss_warnings.append(xss_warning)
             xss_logs.append(xss_per_log)
         self.table_data.append(xss_msg)
+        print(self.table_data)
 
         for row_data in self.table_data:
             for item_data in row_data:
@@ -109,10 +112,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             csrf_msg.append([item, csrf_per_warning, level])
 
         self.table_data.append(csrf_msg)
-
         for row_data in self.table_data:
             for item_data in row_data:
                 self.Table.add_row(item_data)
+
 
     def brute_trace(self):
         # target_list = self.Tools.scanner_model.getCheckedItems()
@@ -129,6 +132,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.table_data.append(brute_msg)
 
+
+    def phish_trace(self):
+        target_list = self.Tools.scanner_model.getCheckedItems()
+        level = str(random.randint(7, 10))
+        phish_msg = []
+        for item in target_list:
+            phish_per_log, phish_per_warning = self.interface.phish_interface(item)
+            self.ui.log.append(phish_per_log)
+            phish_msg.append([item, phish_per_warning, level])
+
+        self.table_data.append(phish_msg)
         for row_data in self.table_data:
             for item_data in row_data:
                 self.Table.add_row(item_data)
