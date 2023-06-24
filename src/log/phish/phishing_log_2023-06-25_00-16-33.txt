@@ -1,5 +1,0 @@
-Start Phishing Detect!!!
-[00:16:05]: From https://dkruvnfjf.weebly.com/ gets screenshot successfully!
-[00:16:05]: From https://dkruvnfjf.weebly.com/ gets ocr_screenshot successfully!
-[00:16:33]: Detect the FORM action in url: https://dkruvnfjf.weebly.com/ajax/apps/formSubmitAjax.php
-[00:16:33]: Detect The [66.667%] Keyword from: ['登录', '邮箱', '符号', '认证', '动词', '密码', '助词'] in https://dkruvnfjf.weebly.com/
