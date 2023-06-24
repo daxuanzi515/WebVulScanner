@@ -1,10 +1,5 @@
 import time
-from selenium.webdriver.support import expected_conditions as ec
-from selenium import webdriver
 
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 
 # 截图 存 src/main/phish/target/screenshot_{}-{}.png
 # ocr 结果 存 src/main/phish//out/ocr_image_{}_{}.png
@@ -32,6 +27,13 @@ class PhishDetector:
 
 
     def get_screen_shot_invisible(self, url, img_path):
+        from selenium.webdriver.support import expected_conditions as ec
+        from selenium import webdriver
+
+        from selenium.webdriver.chrome.options import Options
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.wait import WebDriverWait
+
         # 隐式截图
         chrome_options = Options()
         chrome_options.add_argument("--headless")  # 使用无头模式
