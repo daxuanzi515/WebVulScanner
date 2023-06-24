@@ -1,6 +1,7 @@
 from spider.spider import Spider
 from xss.xsstrace import XssTrace
 from csrf.csrftrace import Csrf
+from bruteforce.brutetrace import BruteForce
 from HTMLtoPDF.html_to_pdf import HTMLtoPDF
 
 class interface(object):
@@ -22,6 +23,12 @@ class interface(object):
         csrf = Csrf(url, self.config_ini)
         csrf_log, csrf_warning = csrf.execute_shell_command()
         return csrf_log, csrf_warning
+
+    def brute_interface(self, url):
+        brute = BruteForce(url, self.config_ini)
+        m, name, passw, others = brute.scan()
+        brute_warning, brute_log = brute.brute(m, name, passw, others)
+        return brute_log, brute_warning
 
     def download_interface(self, data):
         downloader = HTMLtoPDF(self.config_ini)
