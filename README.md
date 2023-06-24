@@ -86,8 +86,8 @@ url_list = [
         'http://myvirgin-mobile-login.com/profile.php', # 手机购买个人信息 需要事先人机验证
         'https://freefireevent2023.github.io/spin/', # 登录ID表单
         'https://systemcesure.buzz/portalserver/bancanetempresarial/index/public/', # 伪造公司介绍面
-        'https://login.busiinesshellp.click/',# facebook 登录界面
         'http://192.168.43.135/',# 本机kali的twitter 登录界面
+        'https://dkruvnfjf.weebly.com/',# 随时会挂 所以需要实验
         'https://psyopclaim.space/' # ape币 猿币交易
     ]
 
