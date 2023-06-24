@@ -21,8 +21,10 @@ class interface(object):
 
     def phish_interface(self, url):
         phish_detector = PhishDetector(self.config_ini)
-        phish_log, phish_warning = phish_detector.from_screen_To_ocr_result(url)
-        return phish_log, phish_warning
+        # 1
+        # 2
+        
+
 
     def csrf_interface(self, url):
         csrf = Csrf(url, self.config_ini)
