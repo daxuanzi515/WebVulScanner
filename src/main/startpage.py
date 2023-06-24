@@ -102,8 +102,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def csrf_trace(self):
         target_list = self.Tools.scanner_model.getCheckedItems()
-        # csrf_logs = []
-        # csrf_warnings = []
         csrf_msg = []
         level = '6'
         for item in target_list:
@@ -135,7 +133,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def phish_trace(self):
         target_list = self.Tools.scanner_model.getCheckedItems()
-        level = str(random.randint(7, 10))
+        level = str(random.randint(8, 10))
         phish_msg = []
         for item in target_list:
             phish_per_log, phish_per_warning = self.interface.phish_interface(item)
@@ -202,7 +200,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         menu.exec_(self.ui.scanner.viewport().mapToGlobal(pos))
 
     def addData(self):
-        print('yes')
         validator = QRegularExpressionValidator(QRegularExpression(r'[a-zA-z]+://[^\s]*'), self)
         url, ok = QInputDialog.getText(self, "添加网址", "请输入网址:")
         if validator.validate(url, 0)[0] == QValidator.Acceptable:

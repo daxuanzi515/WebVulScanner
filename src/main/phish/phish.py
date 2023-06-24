@@ -6,11 +6,9 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
-from config.config import Config
-
 # 截图 存 src/main/phish/target/screenshot_{}-{}.png
 # ocr 结果 存 src/main/phish//out/ocr_image_{}_{}.png
-# 生成 log 存  src/main/log/phishing_log_{}.txt
+# 生成 log 存  src/log/phishing_log_{}.txt
 class PhishDetector:
     def __init__(self, config_ini):
         super(PhishDetector, self).__init__()
@@ -84,7 +82,7 @@ class PhishDetector:
         # print('The image from: {} screenshot gets sucessfully~~'.format(url))
 
         self.ocr_result[url] = self.screenshot_ocr_operator(real_path, out_path)
-        self.log_content.append('[{}]: From {} gets screenshot successfully!\n'.format(log_time, url))
+        self.log_content.append('[{}]: From {} gets ocr_screenshot successfully!\n'.format(log_time, url))
         # print('The image from: {} ocr gets sucessfully~~'.format(url))
 
 
@@ -108,21 +106,21 @@ class PhishDetector:
 
         # print('key_prop:{}, keywords:{}'.format(keyword_prop,keywords))
 
-        if keyword_prop !=0:
+        if keyword_prop != 0.0:
             self.log_content.append('[{}]: Detect The [{}%] Keyword from: {} in {}\n'.format(log_time, keyword_prop, keywords, url))
             self.warnings.append('Detect The [{}%] Keyword from: {} in {}\n'.format(keyword_prop, keywords, url))
             # print('[{}]: Detect The [{}%] Keyword from: {} in {}\n'.format(log_time, keyword_prop, keywords, url))
 
-        log_file = self.phish_log + r'/phishing_log_{}.txt'.format(current_time)
+        log_file = self.phish_log.format(current_time)
+
         log_string = ''.join(self.log_content)
         warning_string = ''.join(self.warnings)
+
         with open(log_file,'w',encoding='utf-8') as file:
             file.write(log_string)
         file.close()
         # print('write end.\n')
         return log_string, warning_string
-
-
 
 class LevelJudge:
     def __init__(self):
@@ -171,7 +169,7 @@ class LevelJudge:
                 # print(value_list)
                 for value in value_list:
                     if value in text:
-                        shot_count+=1
+                        shot_count += 1
                         shot_class.add(item)
             total_count += len(text.split())
         # 保留三位小数
@@ -218,36 +216,3 @@ class LevelJudge:
         else:
             info.append("Detect No href in url.\n")
         return info
-
-
-if __name__ == '__main__':
-    config_obj = Config()
-    config_ini = config_obj.read_config()
-    phish_detector = PhishDetector(config_ini)
-    url_list = [
-        # 'http://myvirgin-mobile-login.com/',# 手机购买表单 需要事先人机验证
-        # 'http://myvirgin-mobile-login.com/profile.php', # 手机购买个人信息 需要事先人机验证
-        # 'https://freefireevent2023.github.io/spin/', # 登录ID表单
-        # 'https://systemcesure.buzz/portalserver/bancanetempresarial/index/public/', # 伪造公司介绍面
-        # 'https://dkruvnfjf.weebly.com/',# XXX登录界面
-        'http://192.168.43.135',# kali的twitter 登录 每一次不一样
-        # 'https://psyopclaim.space/', # ape币 猿币交易
-    ]
-    phish_detector.check_and_create_directory(phish_detector.target_img)
-    phish_detector.check_and_create_directory(phish_detector.out_img)
-    phish_detector.check_and_create_directory(phish_detector.phish_log)
-    warnings = []
-    log_text = []
-    for url in url_list:
-        phish_detector.from_screen_To_ocr_result(url=url)
-        log_words, warning = phish_detector.level_judge_operator(url=url)
-        print("warning :", warning)
-        print("log_words:", log_words)
-        warnings.append(warning)
-        log_text.append(log_words)
-    #
-    # for index,item in enumerate(warnings):
-    #     print('{}:{}'.format(index, item))
-    #
-    # for index,item in enumerate(log_text):
-    #     print('{}:{}'.format(index, item))

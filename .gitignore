@@ -1,11 +1,3 @@
-src/main/phish/out/*
-!src/main/phish/out
-src/main/phish/target/*
-!src/main/phish/target
-src/pdf/*
-!src/pdf
-src/log/*
-!src/log
 # 默认忽略的文件
 /shelf/
 /workspace.xml
