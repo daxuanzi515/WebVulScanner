@@ -55,6 +55,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui.xss.stateChanged.connect(self.xss_trace)
         self.ui.csrf.stateChanged.connect(self.csrf_trace)
         self.ui.force.stateChanged.connect(self.brute_trace)
+        self.ui.webattack.stateChanged.connect(self.phish_trace)
 
         self.ui.findlog.clicked.connect(self.find_log)
         self.ui.clearlog.clicked.connect(self.clear_log)
@@ -81,26 +82,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def xss_trace(self):
         # 网址列表
         target_list = self.Tools.scanner_model.getCheckedItems()
-        xss_logs = []
-        xss_warnings = []
         xss_msg = []
-        level = str(random.randint(4, 7))
+        level = '7'
         for item in target_list:
             xss_per_log, xss_warning = self.interface.xss_interface(item)
             self.ui.log.append(xss_per_log)
-            xss_msg.append([item, xss_warning, level])
-            xss_warnings.append(xss_warning)
-            xss_logs.append(xss_per_log)
-        self.table_data.append(xss_msg)
-
-        for row_data in self.table_data:
-            for item_data in row_data:
-                self.Table.add_row(item_data)
+            xss_data = [item, xss_warning, level]
+            xss_msg.append(xss_data)
+        self.add_only_item(item_msg=xss_msg)
 
     def csrf_trace(self):
         target_list = self.Tools.scanner_model.getCheckedItems()
-        # csrf_logs = []
-        # csrf_warnings = []
         csrf_msg = []
         level = '6'
         for item in target_list:
@@ -108,16 +100,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.ui.log.append(csrf_per_log)
             csrf_msg.append([item, csrf_per_warning, level])
 
-        self.table_data.append(csrf_msg)
-
-        for row_data in self.table_data:
-            for item_data in row_data:
-                self.Table.add_row(item_data)
+        self.add_only_item(item_msg=csrf_msg)
 
     def brute_trace(self):
-        # target_list = self.Tools.scanner_model.getCheckedItems()
         target_list = self.Tools.scanner_model.getCheckedItems()
-        # target_list = self.Tools.scanner_model.getCheckedItems()
         brute_msg = []
         level = '2'
         for item in target_list:
@@ -128,10 +114,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             brute_msg.append([item, str(brute_per_warning), level])
 
         self.table_data.append(brute_msg)
+        # waiting add
 
-        for row_data in self.table_data:
-            for item_data in row_data:
-                self.Table.add_row(item_data)
+    def phish_trace(self):
+        target_list = self.Tools.scanner_model.getCheckedItems()
+        level = str(random.randint(8, 10))
+        phish_msg = []
+        for item in target_list:
+            phish_per_log, phish_per_warning = self.interface.phish_interface(item)
+            self.ui.log.append(phish_per_log)
+            phish_msg.append([item, phish_per_warning, level])
+
+        self.add_only_item(item_msg=phish_msg)
 
     def clear_log(self):
         self.ui.log.clear()
@@ -142,9 +136,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.txt)")
         if select_file_path:
-        # 将文件路径转换为QUrl对象
+            # 将文件路径转换为QUrl对象
             url = QUrl.fromLocalFile(select_file_path)
-        # 使用默认的文本编辑器打开文件
+            # 使用默认的文本编辑器打开文件
             QDesktopServices.openUrl(url)
 
     def change_theme(self):
@@ -164,9 +158,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.pdf)")
         if select_file_path:
-        # 将文件路径转换为QUrl对象
+            # 将文件路径转换为QUrl对象
             url = QUrl.fromLocalFile(select_file_path)
-        # 使用默认的文本编辑器打开文件
+            # 使用默认的文本编辑器打开文件
             QDesktopServices.openUrl(url)
 
     # override
@@ -188,7 +182,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         menu.exec_(self.ui.scanner.viewport().mapToGlobal(pos))
 
     def addData(self):
-        print('yes')
         validator = QRegularExpressionValidator(QRegularExpression(r'[a-zA-z]+://[^\s]*'), self)
         url, ok = QInputDialog.getText(self, "添加网址", "请输入网址:")
         if validator.validate(url, 0)[0] == QValidator.Acceptable:
@@ -202,3 +195,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             item1.insertRow(0, item)
         else:
             QMessageBox.warning(self, "输入错误", "请输入有效的网址！", QMessageBox.Ok)
+
+    def add_only_item(self, item_msg):
+        if not self.table_data:
+            self.table_data.append(item_msg)
+            for row_data in self.table_data:
+                for item_data in row_data:
+                    self.Table.add_row(item_data)
+        else:
+            new_input = []
+            for per_data in item_msg:
+                if not any(per_data == existing_data for existing_row in self.table_data for existing_data in
+                           existing_row):
+                    new_input.append(per_data)
+            self.table_data.append(new_input)
+            self.Table.setRowCount(0)
+            for row_data in self.table_data:
+                for item_data in row_data:
+                    self.Table.add_row(item_data)
