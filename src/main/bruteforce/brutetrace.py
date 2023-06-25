@@ -60,12 +60,8 @@ class BruteForce:
         results = []
         self.log = self.log + "use headers: " + str(self.headers) + '\n'
         dict = {}
-        print("yes")
         valpassws = loadpass.load()
         valacc = loadacc.load()
-        print("load")
-        print(valacc)
-        print(valpassws)
         for valp in valpassws:
             for vala in valacc:
                 result = []
