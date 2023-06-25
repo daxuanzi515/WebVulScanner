@@ -1,10 +1,11 @@
 import time
-from selenium.webdriver.support import expected_conditions as ec
-from selenium import webdriver
 
-from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
+# from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
+
 
 # 截图 存 src/main/phish/target/screenshot_{}-{}.png
 # ocr 结果 存 src/main/phish/out/ocr_image_{}_{}.png
@@ -14,13 +15,13 @@ class PhishDetector:
         super(PhishDetector, self).__init__()
         self.config_ini = config_ini
         self.target_img = self.config_ini['main_project']['project_path'] + self.config_ini['phish']['phish_target_img']
-        self.out_img = self.config_ini['main_project']['project_path'] + self.config_ini['phish']['phish_out_img']
         self.phish_log = self.config_ini['main_project']['project_path'] + self.config_ini['phish']['phish_log']
         self.log_content = []
         self.codes = ''
         self.item_work = []
         self.ocr_result = {}
         self.warnings = []
+        self.image_data = []
         # chrome_driver 添加到环境变量！
         # self.chrome_driver = r'E:\formalFiles\Chrome_Driver\chromedriver_win32\chromedriver.exe'
 
@@ -47,27 +48,16 @@ class PhishDetector:
         chrome_driver.quit()
 
 
-    def screenshot_ocr_operator(self, input_path, output_path):
+    def screenshot_ocr_operator(self, input_path):
         from paddleocr import PaddleOCR
-        from paddleocr.tools.infer.utility import draw_ocr
         # Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换
         # 例如`ch`, `en`, `fr`, `german`, `korean`, `japan`
         ocr = PaddleOCR(use_angle_cls=True, lang="en", show_log=False)  # need to run only once to download and load model into memory
         result = ocr.ocr(input_path, cls=True)
-
-        # 显示结果
-        # 如果本地没有simfang.ttf，可以在doc/fonts目录下下载
-        from PIL import Image
         result = result[0]
-        image = Image.open(input_path).convert('RGB')
-        boxes = [line[0] for line in result]
         txts = [line[1][0] for line in result]
-        scores = [line[1][1] for line in result]
-        im_show = draw_ocr(image, boxes, txts, scores, font_path=r'C:\Windows\Fonts\simsun.ttc')
-        im_show = Image.fromarray(im_show)
-        im_show.save(output_path)
+        self.image_data.append([input_path, result])
         return txts
-
 
     def from_screen_To_ocr_result(self, url):
         current_time = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
@@ -75,13 +65,12 @@ class PhishDetector:
         self.log_content.clear()
         self.log_content.append('Start Phishing Detect!!!\n')
         item_name = r'/screenshot_{}_.png'.format(current_time)
-        out_path = self.out_img + item_name
         real_path = self.target_img + item_name
         self.get_screen_shot_invisible(url, real_path)
         self.log_content.append('[{}]: From {} gets screenshot successfully!\n'.format(log_time, url))
         # print('The image from: {} screenshot gets sucessfully~~'.format(url))
 
-        self.ocr_result[url] = self.screenshot_ocr_operator(real_path, out_path)
+        self.ocr_result[url] = self.screenshot_ocr_operator(real_path)
         self.log_content.append('[{}]: From {} gets ocr_screenshot successfully!\n'.format(log_time, url))
         # print('The image from: {} ocr gets sucessfully~~'.format(url))
 
@@ -181,10 +170,9 @@ class LevelJudge:
 
     # 注意这里获取不到源代码只能用浏览器模拟
     def identify_url_source(self, codes):
-        # source_code = self.url_response(url=url)
         source_code = codes
         form_warning = self.form_container(source_code=source_code)
-        href_warning = self.herf_container(source_code=source_code)
+        href_warning = self.href_container(source_code=source_code)
         return form_warning + href_warning
 
     def form_container(self, source_code):
@@ -219,23 +207,26 @@ class LevelJudge:
                 # 删除无关的样式和类
                 input_match = re.sub(r'class=".*?"', '', input_match)
                 input_match = re.sub(r'style=".*?"', '', input_match)
-
                 # 删除指定的属性
                 input_match = re.sub(r'role=".*?"', '', input_match)
                 input_match = re.sub(r'label=".*?"', '', input_match)
                 input_match = re.sub(r'id=".*?"', '', input_match)
                 input_match = re.sub(r'required', '', input_match)
                 input_match = re.sub(r'type=".*?"', '', input_match)
+                # 删除checked、placeholder和autocomplete属性
+                input_match = re.sub(r'checked=".*?"', '', input_match)
+                input_match = re.sub(r'placeholder=".*?"', '', input_match)
+                input_match = re.sub(r'autocomplete=".*?"', '', input_match)
+                # 检查name和value同时出现
+                if 'name="' in input_match and 'value="' in input_match or 'name="' in input_match or 'value="' in input_match:
+                    # 提取属性
+                    attributes = re.findall(r'(\w+)\s*=\s*"(.*?)"', input_match)
+                    attributes_dict = dict(attributes)
+                    attributes_list.append(attributes_dict)
 
-                attributes = re.findall(r'(\w+)\s*=\s*"(.*?)"', input_match)
-                attributes_dict = dict(attributes)
-                attributes_list.append(attributes_dict)
         return attributes_list
 
-
-
-
-    def herf_container(self, source_code):
+    def href_container(self, source_code):
         import re
         pattern = r'href=[\'"](.*?)[\'"]'
         matches = re.findall(pattern, source_code)
@@ -244,7 +235,7 @@ class LevelJudge:
             for match in matches:
                 if match != '/' and match != '#' and match != '\\\\' and match != '':
                     if match.startswith(('http://', 'https://')) and not match.endswith(('.ico', '.css', '.js','.png','.jpeg','jpg')):
-                        info.append(f"Detect the HERF in url: {match}\n")
+                        info.append(f"Detect the HREF in url: {match}\n")
         else:
             info.append("Detect No href in url.\n")
         return info

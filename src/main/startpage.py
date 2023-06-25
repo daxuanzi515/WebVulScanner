@@ -61,6 +61,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui.clearlog.clicked.connect(self.clear_log)
         self.ui.theme.stateChanged.connect(self.change_theme)
         self.ui.report.clicked.connect(self.download_report)
+        self.ui.ocr.clicked.connect(self.draw_image)
 
         self.ui.scanner.setContextMenuPolicy(Qt.CustomContextMenu)
         self.ui.scanner.customContextMenuRequested.connect(self.showContextMenu)
@@ -157,6 +158,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['pdf']['pdf_path']
 
         select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.pdf)")
+        if select_file_path:
+            # 将文件路径转换为QUrl对象
+            url = QUrl.fromLocalFile(select_file_path)
+            # 使用默认的文本编辑器打开文件
+            QDesktopServices.openUrl(url)
+
+    def draw_image(self):
+        # print('draw starting!')
+        info = '提示:' + self.interface.draw_image_interface()
+        self.ui.log.append(info)
+        # print('draw ending!')
+        folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['phish']['phish_out_img']
+        select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.png)")
         if select_file_path:
             # 将文件路径转换为QUrl对象
             url = QUrl.fromLocalFile(select_file_path)
