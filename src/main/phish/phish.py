@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
 # 截图 存 src/main/phish/target/screenshot_{}-{}.png
-# ocr 结果 存 src/main/phish//out/ocr_image_{}_{}.png
+# ocr 结果 存 src/main/phish/out/ocr_image_{}_{}.png
 # 生成 log 存  src/log/phishing_log_{}.txt
 class PhishDetector:
     def __init__(self, config_ini):
@@ -136,17 +136,17 @@ class LevelJudge:
             # 电话号码
             '电话号码':['number','phone','call','mobile','phone number','calling'],
             # 助词
-            '助词': ['success','successful','successfully','opportunity','congratulations','welcome','from'],
+            '助词': ['success','successful','successfully','opportunity','congratulations','welcome','from','favor'],
             # 动词
-            '动词':['submit','enter','continue','next','connect','disconnect'],
+            '动词':['submit','enter','continue','next','connect','disconnect','protect','create','forgotten','trouble','activate','guide'],
             # 账户
             '账户':['account', 'freeze', 'activate', 'profile','details','virgin'],
             # 金钱
-            '金钱':['money','bussiness','financial','finance'],
+            '金钱':['money','bussiness','financial','finance','wallet','airdrop'],
             # 特殊符号
             '符号':['$','￥','@','>>','*'],
             # 认证
-            '认证':['identify','vertification','details','name','birth','country','postcode','indicates'],
+            '认证':['identify','vertification','details','name','birth','country','postcode','indicates','issues','help'],
             # 安装
             '安装':['launch','launching'],
             # 企业
@@ -201,7 +201,39 @@ class LevelJudge:
             # print("网页中没有表单提交的 action。")
             info.append("Detect No form in url.\n")
 
+        attributes_list = self.get_form_input_attributes(source_code=source_code)
+        attributes_strings = [', '.join([f'{key}: {value}' for key, value in attributes.items()]) + '\n' for attributes in attributes_list]
+        info = info + attributes_strings
+
         return info
+
+    def get_form_input_attributes(self, source_code):
+        import re
+        pattern = r'<form.*?>(.*?)</form>'
+        matches = re.findall(pattern, source_code, re.DOTALL)
+        attributes_list = []
+        for match in matches:
+            input_pattern = r'<input.*?>'
+            input_matches = re.findall(input_pattern, match)
+            for input_match in input_matches:
+                # 删除无关的样式和类
+                input_match = re.sub(r'class=".*?"', '', input_match)
+                input_match = re.sub(r'style=".*?"', '', input_match)
+
+                # 删除指定的属性
+                input_match = re.sub(r'role=".*?"', '', input_match)
+                input_match = re.sub(r'label=".*?"', '', input_match)
+                input_match = re.sub(r'id=".*?"', '', input_match)
+                input_match = re.sub(r'required', '', input_match)
+                input_match = re.sub(r'type=".*?"', '', input_match)
+
+                attributes = re.findall(r'(\w+)\s*=\s*"(.*?)"', input_match)
+                attributes_dict = dict(attributes)
+                attributes_list.append(attributes_dict)
+        return attributes_list
+
+
+
 
     def herf_container(self, source_code):
         import re
