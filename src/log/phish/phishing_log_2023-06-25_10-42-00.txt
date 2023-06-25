@@ -1,8 +1,0 @@
-Start Phishing Detect!!!
-[10:41:43]: From http://myvirgin-mobile-login.com/ gets screenshot successfully!
-[10:41:43]: From http://myvirgin-mobile-login.com/ gets ocr_screenshot successfully!
-[10:42:00]: Detect the FORM action in url: profile.php
-[10:42:00]: name: cno, value: 
-[10:42:00]: name: password, autocomplete: off
-[10:42:00]: value: 6LcQ3QMTAAAAAHb40s1hOHzrDyCbHeXlwLLO9LTg
-[10:42:00]: Detect The [86.667%] Keyword from: ['邮箱', '电话号码', '助词', '认证', '账户', '密码', '动词', '登录'] in http://myvirgin-mobile-login.com/
