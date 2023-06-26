@@ -56,7 +56,7 @@ class PhishDetector:
         result = ocr.ocr(input_path, cls=True)
         result = result[0]
         txts = [line[1][0] for line in result]
-        self.image_data.append([input_path, result])
+        self.image_data = [input_path, result]
         return txts
 
     def from_screen_To_ocr_result(self, url):
@@ -162,7 +162,10 @@ class LevelJudge:
                         shot_class.add(item)
             total_count += len(text.split())
         # 保留三位小数
-        shot_pro = round(shot_count / total_count * 100, 3)
+        if total_count != 0:
+            shot_pro = round(shot_count / total_count * 100, 3)
+        else:
+            shot_pro = 0
         # print('命中率:{},总词数:{}'.format(shot_pro,total_count))
         # print('命中类别:{}'.format(list(shot_class)))
 

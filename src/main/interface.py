@@ -26,7 +26,7 @@ class interface(object):
         phish_detector = PhishDetector(self.config_ini)
         phish_detector.from_screen_To_ocr_result(url=url)
         log_word, warning = phish_detector.level_judge_operator(url=url)
-        self.image_data = phish_detector.image_data
+        self.image_data.append(phish_detector.image_data)
         return log_word, warning
 
     def csrf_interface(self, url):
@@ -51,20 +51,23 @@ class interface(object):
         from paddleocr.tools.infer.utility import draw_ocr
         image_data = self.image_data
         if not image_data:
-            # print('图片数据为空！')
+            print('图片数据为空！')
             return "图片数据为空，请点击钓鱼网站检测之后再来查看图片!\n"
         else:
-            # print('请耐心等待图片生成....\n')
+            print('请耐心等待图片生成....\n')
             current_time = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
-            for index, item in enumerate(image_data):
-                image = Image.open(item[0]).convert('RGB')
-                path = self.config_ini['main_project']['project_path'] + self.config_ini['phish']['phish_out_img'] \
-                       + r'/ocr_screenshot_{}_{}.png'.format(current_time, index)
-                im_show = draw_ocr(image, [line[0] for line in item[1]], [line[1][0] for line in item[1]],
-                                   [line[1][1] for line in item[1]],
-                                   font_path=self.config_ini['main_project']['project_path'] +
-                                             self.config_ini['components']['tff'])
-                ocr_img = Image.fromarray(im_show)
-                ocr_img.save(path)
-            # print('生成图片完毕!')
+            for index, per_data in enumerate(image_data):
+                input_path, data = per_data
+                print('data:', data)
+                output_path = self.config_ini['main_project']['project_path'] + self.config_ini['phish'][
+                    'phish_out_img'] + \
+                              r'/ocr_screenshot_{}_{}.png'.format(current_time, index)
+                image = Image.open(input_path).convert('RGB')
+                img_show = draw_ocr(image, [line[0] for line in data], [line[1][0] for line in data],
+                                    [line[1][1] for line in data],
+                                    font_path=self.config_ini['main_project']['project_path'] +
+                                              self.config_ini['components']['tff'])
+                ocr_img = Image.fromarray(img_show)
+                ocr_img.save(output_path)
+            print('生成图片完毕!')
             return '~~生成图片完毕~~\n'

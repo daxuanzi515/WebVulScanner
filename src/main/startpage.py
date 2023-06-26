@@ -132,15 +132,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui.log.clear()
 
     def find_log(self):
-
         folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['log']['log_path']
-
-        select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.txt)")
-        if select_file_path:
-            # 将文件路径转换为QUrl对象
-            url = QUrl.fromLocalFile(select_file_path)
-            # 使用默认的文本编辑器打开文件
-            QDesktopServices.openUrl(url)
+        select_file_paths, _ = QtWidgets.QFileDialog.getOpenFileNames(self, "选取文件", folder_path, "Text Files (*.png)")
+        if select_file_paths:
+            for select_file_path in select_file_paths:
+                # 将文件路径转换为QUrl对象
+                url = QUrl.fromLocalFile(select_file_path)
+                # 使用默认的文本编辑器打开文件
+                QDesktopServices.openUrl(url)
 
     def change_theme(self):
         if self.wintheme == self.light_theme:
@@ -157,25 +156,25 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['pdf']['pdf_path']
 
-        select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.pdf)")
-        if select_file_path:
-            # 将文件路径转换为QUrl对象
-            url = QUrl.fromLocalFile(select_file_path)
-            # 使用默认的文本编辑器打开文件
-            QDesktopServices.openUrl(url)
+        select_file_paths, _ = QtWidgets.QFileDialog.getOpenFileNames(self, "选取文件", folder_path, "Text Files (*.png)")
+        if select_file_paths:
+            for select_file_path in select_file_paths:
+                # 将文件路径转换为QUrl对象
+                url = QUrl.fromLocalFile(select_file_path)
+                # 使用默认的文本编辑器打开文件
+                QDesktopServices.openUrl(url)
 
     def draw_image(self):
-        # print('draw starting!')
         info = '提示:' + self.interface.draw_image_interface()
         self.ui.log.append(info)
-        # print('draw ending!')
         folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['phish']['phish_out_img']
-        select_file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", folder_path, "Text Files (*.png)")
-        if select_file_path:
-            # 将文件路径转换为QUrl对象
-            url = QUrl.fromLocalFile(select_file_path)
-            # 使用默认的文本编辑器打开文件
-            QDesktopServices.openUrl(url)
+        select_file_paths, _ = QtWidgets.QFileDialog.getOpenFileNames(self, "选取文件", folder_path, "Text Files (*.png)")
+        if select_file_paths:
+            for select_file_path in select_file_paths:
+                # 将文件路径转换为QUrl对象
+                url = QUrl.fromLocalFile(select_file_path)
+                # 使用默认的文本编辑器打开文件
+                QDesktopServices.openUrl(url)
 
     # override
     def enterEvent(self, event):
