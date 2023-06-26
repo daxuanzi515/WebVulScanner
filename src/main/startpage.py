@@ -120,7 +120,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def phish_trace(self):
         target_list = self.Tools.scanner_model.getCheckedItems()
-        level = str(random.randint(8, 10))
+        level = str(random.randint(7, 9))
         phish_msg = []
         for item in target_list:
             phish_per_log, phish_per_warning = self.interface.phish_interface(item)

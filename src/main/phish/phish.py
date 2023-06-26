@@ -181,8 +181,9 @@ class LevelJudge:
     def form_container(self, source_code):
         import re
         pattern = r'<form.*?action="(.*?)".*?>'
-        matches = re.findall(pattern, source_code)
+        init_matches = re.findall(pattern, source_code)
         info = []
+        matches = list(set(init_matches))  # 去重
         if matches:
             # print("警告：网页中存在表单提交的 action！")
             for match in matches:
@@ -193,7 +194,7 @@ class LevelJudge:
             info.append("Detect No form in url.\n")
 
         attributes_list = self.get_form_input_attributes(source_code=source_code)
-        attributes_strings = [', '.join([f'{key}: {value}' for key, value in attributes.items()]) + '\n' for attributes in attributes_list]
+        attributes_strings = [', '.join([f'{key}={value}' for key, value in attributes.items()]) + '\n' for attributes in attributes_list]
         info = info + attributes_strings
 
         return info
@@ -201,11 +202,13 @@ class LevelJudge:
     def get_form_input_attributes(self, source_code):
         import re
         pattern = r'<form.*?>(.*?)</form>'
+        exclude_names = ['lang', 'redirect', 'scribe_log']
         matches = re.findall(pattern, source_code, re.DOTALL)
         attributes_list = []
         for match in matches:
             input_pattern = r'<input.*?>'
-            input_matches = re.findall(input_pattern, match)
+            init_matches = re.findall(input_pattern, match)
+            input_matches = list(set(init_matches))  # 去重
             for input_match in input_matches:
                 # 删除无关的样式和类
                 input_match = re.sub(r'class=".*?"', '', input_match)
@@ -216,23 +219,25 @@ class LevelJudge:
                 input_match = re.sub(r'id=".*?"', '', input_match)
                 input_match = re.sub(r'required', '', input_match)
                 input_match = re.sub(r'type=".*?"', '', input_match)
-                # 删除checked、placeholder和autocomplete属性
+                # 删除checked、placeholder和autocomplete,maxlength属性
                 input_match = re.sub(r'checked=".*?"', '', input_match)
                 input_match = re.sub(r'placeholder=".*?"', '', input_match)
                 input_match = re.sub(r'autocomplete=".*?"', '', input_match)
+                input_match = re.sub(r'maxlength=".*?"','', input_match)
                 # 检查name和value同时出现
-                if 'name="' in input_match and 'value="' in input_match or 'name="' in input_match or 'value="' in input_match:
+                if 'name="' in input_match and 'value="' not in input_match:
                     # 提取属性
                     attributes = re.findall(r'(\w+)\s*=\s*"(.*?)"', input_match)
                     attributes_dict = dict(attributes)
-                    attributes_list.append(attributes_dict)
-
+                    if attributes_dict.get('name') not in exclude_names:
+                        attributes_list.append(attributes_dict)
         return attributes_list
 
     def href_container(self, source_code):
         import re
         pattern = r'href=[\'"](.*?)[\'"]'
-        matches = re.findall(pattern, source_code)
+        init_matches = re.findall(pattern, source_code)
+        matches = list(set(init_matches))
         info = []
         if matches:
             for match in matches:
