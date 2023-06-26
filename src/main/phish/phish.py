@@ -117,29 +117,29 @@ class LevelJudge:
         self.keywords = ['登录', '密码', '邮箱', '电话号码', '助词','动词','账户','金钱','符号','认证','安装','企业']
         self.keywords_list = {
             # 登录
-            '登录':['logging', 'login', 'log in','log','id','register','logging in','sign in','sign up','sign'],
+            '登录': ['log', 'id', 'register', 'sign'],
             # 密码
-            '密码':['password','keyword','secretword','pass','word','key','secret'],
-            #邮箱
-            '邮箱':['email','address','send','sending','contact'],
+            '密码': ['keyword', 'pass'],
+            # 邮箱
+            '邮箱': ['email', 'address', 'send', 'contact'],
             # 电话号码
-            '电话号码':['number','phone','call','mobile','phone number','calling'],
+            '电话号码': ['number', 'phone', 'call', 'mobile', 'calling'],
             # 助词
-            '助词': ['success','successful','successfully','opportunity','congratulations','welcome','from','favor'],
+            '助词': ['success', 'successful', 'opportunity', 'congratulations', 'welcome', 'from'],
             # 动词
-            '动词':['submit','enter','continue','next','connect','disconnect','protect','create','forgotten','trouble','activate','guide'],
+            '动词': ['submit', 'enter', 'continue', 'next', 'connect'],
             # 账户
-            '账户':['account', 'freeze', 'activate', 'profile','details','virgin'],
+            '账户': ['account', 'freeze', 'activate', 'profile', 'details', 'virgin'],
             # 金钱
-            '金钱':['money','bussiness','financial','finance','wallet','airdrop'],
+            '金钱': ['money', 'bussiness', 'financial', 'finance'],
             # 特殊符号
-            '符号':['$','￥','@','>>','*'],
+            '符号': ['$', '￥', '@', '>>', '*'],
             # 认证
-            '认证':['identify','vertification','details','name','birth','country','postcode','indicates','issues','help'],
+            '认证': ['identify', 'vertification', 'details', 'name', 'birth', 'country', 'postcode', 'indicates'],
             # 安装
-            '安装':['launch','launching'],
+            '安装': ['launch', 'launching'],
             # 企业
-            '企业':['facebook','twitter']
+            '企业': ['facebook', 'twitter']
         }
 
     def convert_upper_to_lower(self, text_item):
