@@ -212,7 +212,7 @@ class Tools:
         all_files = []
         for root, dirs, files in os.walk(folder_path):
             for file in files:
-                if file.endswith((".php", ".py", ".txt", '.log')):  # 可改
+                if file.endswith((".php", ".py", ".txt", '.log',".html",".ini",".png",".ui",".js",".db")):  # 可改
                     all_files.append(os.path.join(root, file))
         return all_files
 

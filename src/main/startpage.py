@@ -115,7 +115,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             brute_msg.append([item, str(brute_per_warning), level])
 
         self.table_data.append(brute_msg)
-        # waiting add
+        # waiting add don't touch here
+        # it is not my part you don't need to fix it ok?
 
     def phish_trace(self):
         target_list = self.Tools.scanner_model.getCheckedItems()
@@ -133,7 +134,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def find_log(self):
         folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['log']['log_path']
-        select_file_paths, _ = QtWidgets.QFileDialog.getOpenFileNames(self, "选取文件", folder_path, "Text Files (*.png)")
+        select_file_paths, _ = QtWidgets.QFileDialog.getOpenFileNames(self, "选取文件", folder_path, "Text Files (*.txt)")
         if select_file_paths:
             for select_file_path in select_file_paths:
                 # 将文件路径转换为QUrl对象
@@ -156,7 +157,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         folder_path = self.config_ini['main_project']['project_path'] + self.config_ini['pdf']['pdf_path']
 
-        select_file_paths, _ = QtWidgets.QFileDialog.getOpenFileNames(self, "选取文件", folder_path, "Text Files (*.png)")
+        select_file_paths, _ = QtWidgets.QFileDialog.getOpenFileNames(self, "选取文件", folder_path, "Text Files (*.pdf)")
         if select_file_paths:
             for select_file_path in select_file_paths:
                 # 将文件路径转换为QUrl对象
