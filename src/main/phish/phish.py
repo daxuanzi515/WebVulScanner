@@ -125,21 +125,21 @@ class LevelJudge:
             # 电话号码
             '电话号码': ['number', 'phone', 'call', 'mobile', 'calling'],
             # 助词
-            '助词': ['success', 'successful', 'opportunity', 'congratulations', 'welcome', 'from'],
+            '助词': ['success', 'successful', 'opportunity', 'congratulations', 'welcome', 'from','home','with'],
             # 动词
-            '动词': ['submit', 'enter', 'continue', 'next', 'connect'],
+            '动词': ['submit', 'enter', 'continue', 'next', 'connect','support','to','help'],
             # 账户
-            '账户': ['account', 'freeze', 'activate', 'profile', 'details', 'virgin'],
+            '账户': ['account', 'freeze', 'activate', 'profile', 'details', 'virgin', 'term'],
             # 金钱
             '金钱': ['money', 'bussiness', 'financial', 'finance'],
             # 特殊符号
             '符号': ['$', '￥', '@', '>>', '*'],
             # 认证
-            '认证': ['identify', 'vertification', 'details', 'name', 'birth', 'country', 'postcode', 'indicates'],
+            '认证': ['identify', 'vertification', 'details', 'name', 'game','birth', 'country', 'postcode', 'indicates','privacy'],
             # 安装
-            '安装': ['launch', 'launching'],
+            '安装': ['launch', 'launching','install'],
             # 企业
-            '企业': ['facebook', 'twitter']
+            '企业': ['facebook', 'twitter','google','steam','community','mewe']
         }
 
     def convert_upper_to_lower(self, text_item):
