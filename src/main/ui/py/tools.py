@@ -158,7 +158,6 @@ class TableView(QTableWidget):
 
                 if self.current_theme == (qdarkstyle.load_stylesheet(qt_api='pyqt5')):
                     document.setHtml('<html><body style="color: #E0E1E3;">{}</body></html>'.format(text))
-
                 else:
                     document.setHtml('<html><body style="color: #000000;">{}</body></html>'.format(text))
 

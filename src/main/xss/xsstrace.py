@@ -16,7 +16,7 @@ class XssTrace(object):
         command = ["python",
                    self.path,
                    "--single", self.url]
-        # "./XSSCon/xsscon.py" 当前 但是要调用的时候 变成绝对路径
+        # "./XSSTEST/xsstest.py" 当前 但是要调用的时候 变成绝对路径
         current_time = time.localtime()
         current_time = time.strftime("%Y-%m-%d_%H-%M-%S", current_time)
 
