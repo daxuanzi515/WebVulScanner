@@ -1,6 +1,9 @@
 src/log/xss/*
 src/log/phish/*
 src/log/csrf/*
+src/log/brute/*
+src/log/sql/*
+src/log/bypass/*
 src/pdf/*
 src/main/phish/out/*
 src/main/phish/target/*
@@ -10,6 +13,9 @@ src/main/phish/target/*
 !src/log/csrf/
 !src/main/phish/out/
 !src/main/phish/target/
+!src/log/brute/
+!src/log/bypass/
+!src/log/sql/
 # 默认忽略的文件
 /shelf/
 /workspace.xml

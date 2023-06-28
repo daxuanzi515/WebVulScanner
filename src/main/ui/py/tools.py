@@ -178,7 +178,7 @@ class TableView(QTableWidget):
                 document.setHtml("<html><body>{}</body></html>".format(text))
                 document.setTextWidth(option.rect.width())  # 设置文本宽度为单元格宽度
                 document.setDefaultFont(option.font)
-                size.setHeight(document.size().height())
+                size.setHeight(int(document.size().height()))
             return size
 
 

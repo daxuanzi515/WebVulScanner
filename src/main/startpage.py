@@ -56,6 +56,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui.csrf.stateChanged.connect(self.csrf_trace)
         self.ui.force.stateChanged.connect(self.brute_trace)
         self.ui.webattack.stateChanged.connect(self.phish_trace)
+        self.ui.sql.stateChanged.connect(self.sql_trace)
+        self.ui.form.stateChanged.connect(self.bypass_trace)
+        self.ui.include.stateChanged.connect(self.fileinclu_trace)
 
         self.ui.findlog.clicked.connect(self.find_log)
         self.ui.clearlog.clicked.connect(self.clear_log)
@@ -84,7 +87,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # 网址列表
         target_list = self.Tools.scanner_model.getCheckedItems()
         xss_msg = []
-        level = '7'
+        level = str(random.randint(7, 8))
         for item in target_list:
             xss_per_log, xss_warning = self.interface.xss_interface(item)
             self.ui.log.append(xss_per_log)
@@ -95,7 +98,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def csrf_trace(self):
         target_list = self.Tools.scanner_model.getCheckedItems()
         csrf_msg = []
-        level = '6'
+        level = str(random.randint(6, 7))
         for item in target_list:
             csrf_per_log, csrf_per_warning = self.interface.csrf_interface(item)
             self.ui.log.append(csrf_per_log)
@@ -106,7 +109,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def brute_trace(self):
         target_list = self.Tools.scanner_model.getCheckedItems()
         brute_msg = []
-        level = '2'
+        level = str(random.randint(1, 2))
         for item in target_list:
             brute_per_log, brute_per_warning = self.interface.brute_interface(item)
             print(brute_per_warning)
@@ -114,9 +117,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.ui.log.append(brute_per_log)
             brute_msg.append([item, str(brute_per_warning), level])
 
-        self.table_data.append(brute_msg)
-        # waiting add don't touch here
-        # it is not my part you don't need to fix it ok?
+        self.add_only_item(item_msg=brute_msg)
 
     def phish_trace(self):
         target_list = self.Tools.scanner_model.getCheckedItems()
@@ -128,6 +129,39 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             phish_msg.append([item, phish_per_warning, level])
 
         self.add_only_item(item_msg=phish_msg)
+
+    def sql_trace(self):
+        target_list = self.Tools.scanner_model.getCheckedItems()
+        level = str(random.randint(7, 10))
+        sql_msg = []
+        for item in target_list:
+            sql_per_log, sql_per_warning = self.interface.sql_interface(item)
+            self.ui.log.append(sql_per_log)
+            sql_msg.append([item, sql_per_warning, level])
+
+        self.add_only_item(item_msg=sql_msg)
+
+    def bypass_trace(self):
+        target_list = self.Tools.scanner_model.getCheckedItems()
+        level = str(random.randint(7, 10))
+        bypass_msg = []
+        for item in target_list:
+            bypass_per_log, bypass_per_warning = self.interface.bypass_interface(item)
+            self.ui.log.append(bypass_per_log)
+            bypass_msg.append([item, bypass_per_warning, level])
+
+        self.add_only_item(item_msg=bypass_msg)
+
+    def fileinclu_trace(self):
+        target_list = self.Tools.scanner_model.getCheckedItems()
+        level = str(random.randint(7, 10))
+        fileinclu_msg = []
+        for item in target_list:
+            fileinclu_per_log, fileinclu_per_warning = self.interface.fileinclu_interface(item)
+            self.ui.log.append(fileinclu_per_log)
+            fileinclu_msg.append([item, fileinclu_per_warning, level])
+
+        self.add_only_item(item_msg=fileinclu_msg)
 
     def clear_log(self):
         self.ui.log.clear()

